@@ -3,6 +3,7 @@ import dash_core_components as dcc
 import dash_html_components as html
 import pandas as pd
 import numpy as np
+import plotly.express as px
 from dash.dependencies import Output, Input
 
 data = pd.read_csv("kakamega.csv")
@@ -18,6 +19,7 @@ external_stylesheets = [
 ]
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 app.title = "CPMIS INFOGRAPHICS!"
+
 
 app.layout = html.Div(
     children=[
@@ -100,15 +102,23 @@ app.layout = html.Div(
                     ),
                     className="card",
                 ),
+                html.Div(
+                    children=dcc.Graph(
+                        id="Bar-chart", config={"displayModeBar": False},
+                    ),
+                    className="card",
+                ),
             ],
             className="wrapper",
         ),
     ]
 )
 
+fig = px.bar(data, x = "case_status", y = "sex", color = "sex")
+
 
 @app.callback(
-    [Output("price-chart", "figure"), Output("volume-chart", "figure")],
+    [Output("price-chart", "figure"), Output("volume-chart", "figure"), Output("Bar-chart", "figure")],
     [
         Input("county-filter", "value"),
         Input("sub-filter", "value"),
@@ -130,7 +140,7 @@ def update_charts(county, sub_county, start_date, end_date):
                 "x": filtered_data["case_date"],
                 "y": filtered_data["age"],
                 "type": "lines",
-                "hovertemplate": "$%{y:.2f}<extra></extra>",
+                "hovertemplate": "{y:.2f}<extra></extra>",
             },
         ],
         "layout": {
@@ -140,7 +150,7 @@ def update_charts(county, sub_county, start_date, end_date):
                 "xanchor": "left",
             },
             "xaxis": {"fixedrange": True},
-            "yaxis": {"tickprefix": "$", "fixedrange": True},
+            "yaxis": {"tickprefix": "", "fixedrange": True},
             "colorway": ["#17B897"],
         },
     }
@@ -157,10 +167,31 @@ def update_charts(county, sub_county, start_date, end_date):
             "title": {"text": "", "x": 0.05, "xanchor": "left"},
             "xaxis": {"fixedrange": True},
             "yaxis": {"fixedrange": True},
-            "colorway": ["#E12D39"],
+            "colorway": ["#17B897"],
         },
     }
-    return price_chart_figure, volume_chart_figure
+
+    Bar_chart_figure = {
+
+    
+        "data": [
+            {
+                "x": filtered_data["case_status"],
+                "y": filtered_data["sex"],
+                "type": "bar",
+            },
+        ],
+        "layout": {
+            "title": {"text": "", "x": 0.05, "xanchor": "left"},
+            "xaxis": {"fixedrange": True},
+            "yaxis": {"fixedrange": False},
+            'color': ['sex'],
+            "colorway": ["#0000FF", "#17B897"],
+        },
+    }
+    
+
+    return price_chart_figure, volume_chart_figure, Bar_chart_figure
 
 
 if __name__ == "__main__":
