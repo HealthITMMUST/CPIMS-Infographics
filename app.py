@@ -14,6 +14,7 @@ data.sort_values("case_date", inplace=True)
 external_stylesheets = [
     {
         "href": "https://fonts.googleapis.com/css2?"
+        'https://codepen.io/chriddyp/pen/bWLwgP.css'
         "family=Lato:wght@400;700&display=swap",
         "rel": "stylesheet",
     },
@@ -123,6 +124,8 @@ content_first_row = dbc.Row([
 ], style = CONTENT_FIRST_ROW, )
 
 
+fig4 = px.pie(data, "case_status", color = "case_status")
+fig3 = px.bar(data, x="case category", y="sub_county", color="sub_county", barmode="group")
 
 
 app.layout = html.Div(
@@ -204,13 +207,22 @@ app.layout = html.Div(
                 ),
                 html.Div(
                     children=dcc.Graph(
-                        id="volume-chart", config={"displayModeBar": False},
+                    id='group-bar-graph', 
+                    figure=fig3),
+
+                    className = "card-bar"
+                ),
+                html.Div(
+                    children=dcc.Graph(
+                        id="pie-chart", 
+                        figure = fig4,
+                        config={"displayModeBar": False},
                     ),
                     className="card",
                 ),
                 html.Div(
                     children=dcc.Graph(
-                        id="Bar-chart", config={"displayModeBar": False},
+                        id="bar-chart", config={"displayModeBar": False},
                     ),
                     className="card",
                 ),
@@ -223,8 +235,9 @@ app.layout = html.Div(
 fig = px.bar(data, x = "case_status", y = "sex", color = "sex")
 
 
+
 @app.callback(
-    [Output("price-chart", "figure"), Output("volume-chart", "figure"), Output("Bar-chart", "figure")],
+    [Output("price-chart", "figure"), Output("bar-chart", "figure")],
     [
         Input("county-filter", "value"),
         Input("sub-filter", "value"),
@@ -261,23 +274,23 @@ def update_charts(county, sub_county, start_date, end_date):
         },
     }
 
-    volume_chart_figure = {
-        "data": [
-            {
-                "x": filtered_data["case_date"],
-                "y": filtered_data["sex"],
-                "type": "line",
-            },
-        ],
-        "layout": {
-            "title": {"text": "", "x": 0.05, "xanchor": "left"},
-            "xaxis": {"fixedrange": True},
-            "yaxis": {"fixedrange": True},
-            "colorway": ["#17B897"],
-        },
-    }
+    # volume_chart_figure = {
+    #     "data": [
+    #         {
+    #             "x": filtered_data["case_date"],
+    #             "y": filtered_data["sex"],
+    #             "type": "bar",
+    #         },
+    #     ],
+    #     "layout": {
+    #         "title": {"text": "", "x": 0.05, "xanchor": "left"},
+    #         "xaxis": {"fixedrange": True},
+    #         "yaxis": {"fixedrange": True},
+    #         "colorway": ["#17B897"],
+    #     },
+    # }
 
-    Bar_chart_figure = {
+    bar_chart_figure = {
 
     
         "data": [
@@ -297,7 +310,7 @@ def update_charts(county, sub_county, start_date, end_date):
     }
     
 
-    return price_chart_figure, volume_chart_figure, Bar_chart_figure
+    return price_chart_figure, bar_chart_figure
 
 
 if __name__ == "__main__":
