@@ -1,6 +1,7 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
+import dash_bootstrap_components as dbc
 import pandas as pd
 import numpy as np
 import plotly.express as px
@@ -17,8 +18,45 @@ external_stylesheets = [
         "rel": "stylesheet",
     },
 ]
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = dash.Dash(__name__, external_stylesheets= [external_stylesheets,dbc.themes.BOOTSTRAP])
+
 app.title = "CPMIS INFOGRAPHICS!"
+
+# styling the sidebar
+SIDEBAR_STYLE = {
+    "position": "absolute",
+    "top":"18rem",
+    "left": 0,
+    "bottom": 0,
+    "width": "16rem",
+    "padding": "2rem 1rem",
+    "background-color": "#f8f9fa",
+}
+
+
+
+sidebar = html.Div(
+    [
+        html.Hr(),
+        html.P(
+            "Navigation", className="lead"
+        ),
+        dbc.Nav(
+            [
+                dbc.NavLink("Home", href="/", active="exact"),
+                dbc.NavLink("Registry", href="/page-1", active="exact"),
+                dbc.NavLink("Forms", href="/page-2", active="exact"),
+                dbc.NavLink("Reports", href="/page-3", active="exact"),
+                dbc.NavLink("Gallary", href="/page-4", active="exact"),
+                dbc.NavLink("Import", href="/page-5", active="exact"),
+            ],
+            vertical=True,
+            pills=True,
+        ),
+    ],
+    style=SIDEBAR_STYLE,
+)
+
 
 
 app.layout = html.Div(
@@ -88,6 +126,7 @@ app.layout = html.Div(
             ],
             className="menu",
         ),
+        sidebar,
         html.Div(
             children=[
                 html.Div(
