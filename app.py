@@ -125,7 +125,7 @@ content_first_row = dbc.Row([
 
 
 fig4 = px.pie(data, "case_status", color = "case_status")
-fig3 = px.bar(data, x="case category", y="sub_county", color="sub_county", barmode="group")
+fig3 = px.bar(data, x="knbs_agerange", y="sub_county", color="sub_county", barmode="group")
 
 
 app.layout = html.Div(
