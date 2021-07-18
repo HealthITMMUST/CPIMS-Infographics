@@ -32,8 +32,14 @@ SIDEBAR_STYLE = {
     "padding": "2rem 1rem",
     "background-color": "#f8f9fa",
 }
-
-
+CONTENT_FIRST_ROW = {
+     "margin-left": "18rem",
+    "margin-right": "2rem",
+    "padding": "3rem 1rem",   
+}
+CARD_TEXT_STYLE = {
+    "color": "red"
+}
 
 sidebar = html.Div(
     [
@@ -56,6 +62,66 @@ sidebar = html.Div(
     ],
     style=SIDEBAR_STYLE,
 )
+content_first_row = dbc.Row([
+    dbc.Col(
+        dbc.Card(
+            [
+
+                dbc.CardBody(
+                    [
+                        html.H4(id='card_title_1', children=['box'], className='card-title',
+                                style=CARD_TEXT_STYLE),
+                        html.P(id='card_text_1', children=['Counts'], style=CARD_TEXT_STYLE),
+                    ], style= {"background-color": "#31D7D7"},
+                )
+            ]
+        ),
+        md=3
+    ),
+    dbc.Col(
+        dbc.Card(
+            [
+
+                dbc.CardBody(
+                    [
+                        html.H4('box', className='card-title', style=CARD_TEXT_STYLE),
+                        html.P('Counts.', style=CARD_TEXT_STYLE),
+                    ],style= {"background-color": "#0C69F3"},
+                ),
+            ]
+
+        ),
+        md=3
+    ),
+    dbc.Col(
+        dbc.Card(
+            [
+                dbc.CardBody(
+                    [
+                        html.H4('box', className='card-title', style=CARD_TEXT_STYLE),
+                        html.P('Counts', style=CARD_TEXT_STYLE),
+                    ],style= {"background-color": "#CF7EEB"},
+                ),
+            ]
+
+        ),
+        md=3
+    ),
+    dbc.Col(
+        dbc.Card(
+            [
+                dbc.CardBody(
+                    [
+                        html.H4('box', className='card-title', style=CARD_TEXT_STYLE),
+                        html.P('Counts.', style=CARD_TEXT_STYLE),
+                    ],style= {"background-color": "#DF2748"},
+                ),
+            ]
+        ),
+        md=3
+    )
+], style = CONTENT_FIRST_ROW, )
+
 
 
 
@@ -127,6 +193,7 @@ app.layout = html.Div(
             className="menu",
         ),
         sidebar,
+        content_first_row,
         html.Div(
             children=[
                 html.Div(
