@@ -39,6 +39,7 @@ server = app.server
 app.config.suppress_callback_exceptions = True
 
 # get relative data folder
+
 PATH = pathlib.Path(__file__).parent
 DATA_PATH = PATH.joinpath("data").resolve()
 
@@ -127,7 +128,7 @@ navbar_layout = dbc.Navbar([
         # Use row and col to control vertical alignment of logo / brand
         dbc.Row([
             dbc.Col(html.Img(src=app.get_asset_url("logo.png"), height="60px", style={'stroke': '#508caf'})),
-            dbc.Col(dbc.NavbarBrand("COVID-19", className="ml-2",
+            dbc.Col(dbc.NavbarBrand("CPIMS INFOGRAPHICS", className="ml-2",
                                     style={'fontSize': '2em', 'fontWeight': '900', 'color': '#508caf'})),
         ], align="center", no_gutters=True),
         href='#'),
@@ -238,20 +239,21 @@ timeline_section = dbc.Container([
         dbc.CardBody([
             dbc.Row([
                 dbc.Col([
-                    dbc.Label('Region', html_for='timeline_dd_region'),
+                    dbc.Label('Country', html_for='timeline_dd_region'),
                     dcc.Dropdown(options=region_options, id='timeline_dd_region', value=[],
                                  multi=True, style={'fontSize': '100%'}, placeholder='Optional Region'),
                 ], className='col-12 col-md-6 col-xl-3'),
                 dbc.Col([
-                    dbc.Label('Sub-Region', html_for='timeline_dd_subregion'),
+                    dbc.Label('County', html_for='timeline_dd_subregion'),
                     dcc.Dropdown(options=subregion_options, id='timeline_dd_subregion', value=[],
                                  multi=True, style={'fontSize': '100%'}, placeholder='Optional Sub-Region'),
                 ], className='col-12 col-md-6 col-xl-3'),
                 dbc.Col([
-                    dbc.Label('Country', html_for='timeline_dd_country'),
+                    dbc.Label('sub-county', html_for='timeline_dd_country'),
                     dcc.Dropdown(options=country_options, id='timeline_dd_country', value=[],
                                  multi=True, style={'fontSize': '100%'}, placeholder='Optional Country'),
                 ], className='col-12 col-md-6 col-xl-3'),
+                # can be removed
                 dbc.Col([
                     dbc.Label('Area', html_for='timeline_dd_area'),
                     dcc.Dropdown(options=area_options, id='timeline_dd_area', value=[],
