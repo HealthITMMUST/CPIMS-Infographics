@@ -123,8 +123,29 @@ content_first_row = dbc.Row([
     )
 ], style = CONTENT_FIRST_ROW, )
 
+app.layout = html.Div([
+    html.P("Names:"),
+    dcc.Dropdown(
+        id='names', 
+        value='age', 
+        options=[{'value': x, 'label': x} 
+                 for x in ['age', 'case category', 'case_status', 'sex']],
+        clearable=False
+    ),
+    dcc.Graph(id="pie-chart"),
+])
 
-fig4 = px.pie(data, "case_status", color = "case_status")
+@app.callback(
+    Output("pie-chart", "figure"), 
+    [Input("names", "value")]
+    )
+    
+def generate_chart(names):
+    fig4 = px.pie(df, names=names)
+    return fig4
+
+
+# fig4 = px.pie(data, "case_status", color = "case_status")
 fig3 = px.bar(data, x="knbs_agerange", y="sub_county", color="sub_county", barmode="group")
 
 
@@ -212,13 +233,15 @@ app.layout = html.Div(
 
                     className = "card-bar"
                 ),
-                html.Div(
-                    children=dcc.Graph(
-                        id="pie-chart", 
-                        figure = fig4,
-                        config={"displayModeBar": False},
-                    ),
-                    className="card",
+                html.Div([
+                    html.P("Names:"),
+                    dcc.Dropdown(
+                       id='names', 
+                      value='age', 
+                      options=[{'value': x, 'label': x} 
+                       for x in ['age', 'case category', 'case_status', 'sex']],
+                      clearable=False,
+                      className = "card-bar"
                 ),
                 html.Div(
                     children=dcc.Graph(
@@ -226,19 +249,19 @@ app.layout = html.Div(
                     ),
                     className="card",
                 ),
+                
             ],
             className="wrapper",
         ),
     ]
 )
 
-fig = px.bar(data, x = "case_status", y = "sex", color = "sex")
-
 
 
 @app.callback(
-    [Output("price-chart", "figure"), Output("bar-chart", "figure")],
+    [Output("price-chart", "figure"), Output("bar-chart", "figure"),  Output("pie-chart", "figure")],
     [
+        Input("names", "value"),
         Input("county-filter", "value"),
         Input("sub-filter", "value"),
         Input("date-range", "start_date"),
@@ -264,8 +287,8 @@ def update_charts(county, sub_county, start_date, end_date):
         ],
         "layout": {
             "title": {
-                "text": "",
-                "x": 0.05,
+                "text": "Age of children reported within a given date ",
+                "x": 0.5,
                 "xanchor": "left",
             },
             "xaxis": {"fixedrange": True},
